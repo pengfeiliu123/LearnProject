@@ -3,6 +3,7 @@ package com.lpf.learn;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -22,6 +23,10 @@ public class GetContactsActivity extends AppCompatActivity {
     ListView contactsListView;
     ArrayAdapter<String> contactsAdapter;
     ArrayList<String> contactsList = new ArrayList<>();
+
+    Uri contactsUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+    String contactsName = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME;
+    String contactsNumber = ContactsContract.CommonDataKinds.Phone.NUMBER;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +53,11 @@ public class GetContactsActivity extends AppCompatActivity {
     private void readContacts() {
         Cursor cursor = null;
         try{
-            cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null,null);
+            cursor = getContentResolver().query(contactsUri,null,null,null,null);
             if(cursor!=null){
                 while(cursor.moveToNext()){
-                    String displayName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                    String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    String displayName = cursor.getString(cursor.getColumnIndex(contactsName));
+                    String number = cursor.getString(cursor.getColumnIndex(contactsNumber));
                     contactsList.add(displayName+"\n"+number);
                 }
                 contactsAdapter.notifyDataSetChanged();

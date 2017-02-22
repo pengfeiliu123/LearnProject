@@ -1,1 +1,1 @@
-include ':app'
+include ':app', ':admob', ':greendao', ':leanclouddemo', ':bmob', ':commonlibrary', ':aidl', ':musicplayer'

@@ -14,14 +14,25 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            resValue "string", "news_server_url", "https://news-web.newsstationtech.com/"
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        debug {
+            resValue "string", "news_server_url", "https://news-web.newsstationtech.com/"
+//            resValue "string", "news_server_url", "https://news-web-staging.newsstationtech.com/"
+            minifyEnabled false
+        }
+    }
+    android {
+        useLibrary 'org.apache.http.legacy'
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
 
 
 
@@ -33,5 +44,10 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.jakewharton:butterknife:8.5.1'
     compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.squareup.okhttp3:okhttp:3.5.0'
+    compile 'com.google.code.gson:gson:2.4'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.1.17'
 }

@@ -33,9 +33,9 @@ public abstract class BaseActivity<T extends BasePresenter, E extends IBaseModel
         if (null != mPresenter) {
             mPresenter.mContext = this;
         }
+        initPresenter();
         initView();
         initListener();
-        initPresenter();
     }
 
     protected abstract int initLayout();

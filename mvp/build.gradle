@@ -20,13 +20,19 @@ android {
         }
 
         debug {
-            resValue "string", "news_server_url", "https://news-web.newsstationtech.com/"
-//            resValue "string", "news_server_url", "https://news-web-staging.newsstationtech.com/"
+//            resValue "string", "news_server_url", "https://news-web.newsstationtech.com/"
+            resValue "string", "news_server_url", "https://news-web-staging.newsstationtech.com/"
             minifyEnabled false
         }
     }
     android {
         useLibrary 'org.apache.http.legacy'
+    }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
     }
 }
 
@@ -34,7 +40,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
 
-
+    compile(name:'android-gif-drawable-1.2.7', ext:'aar')
 
 
 
@@ -49,5 +55,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.4'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 
-    compile 'pl.droidsonroids.gif:android-gif-drawable:1.1.17'
+    compile 'com.pnikosis:materialish-progress:1.7'
+
+//    compile 'pl.droidsonroids.gif:android-gif-drawable:1.1.17'
 }

@@ -1,67 +1,35 @@
 package com.lpf.mvp.loadGif;
 
-import android.content.Context;
 import android.graphics.Rect;
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.DrawableRequestBuilder;
-import com.bumptech.glide.DrawableTypeRequest;
-import com.bumptech.glide.GifRequestBuilder;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.ListPreloader;
-import com.bumptech.glide.gifdecoder.GifDecoder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.bumptech.glide.request.target.Target;
-import com.google.gson.Gson;
 import com.lpf.mvp.MainApplication;
-import com.lpf.mvp.NGCommonConfiguration;
 import com.lpf.mvp.R;
 import com.lpf.mvp.base.BaseActivity;
-import com.lpf.mvp.common.Util;
 import com.lpf.mvp.drawable.AlxGifHelper;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import okhttp3.Call;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 import pl.droidsonroids.gif.GifImageView;
-
-import static android.R.attr.duration;
-import static android.R.id.list;
-import static com.lpf.mvp.R.attr.gif;
-import static com.lpf.mvp.R.id.progressBar;
-import static com.lpf.mvp.common.Util.ignoreTrust;
 
 /**
  * Created by liupengfei on 2017/5/16 14:12.
  */
 
-public class GifActivity extends BaseActivity<GifPresenter, GifModel> implements GifContract.View {
+public class GifActivity2 extends BaseActivity<GifPresenter, GifModel> implements GifContract.View {
 
     @BindView(R.id.gif_list)
     ListView gifList;
@@ -160,7 +128,6 @@ public class GifActivity extends BaseActivity<GifPresenter, GifModel> implements
                         //手指抛动时，手指用力滑动后,手指离开屏幕ListView由于惯性继续滑动
                         positionTop.setText("漂移中...");
                         Glide.with(MainApplication.getInstance()).pauseRequests();
-                        resetAllItemsStatus(view);
                         break;
                     default:
                         break;
@@ -213,41 +180,27 @@ public class GifActivity extends BaseActivity<GifPresenter, GifModel> implements
                 imageCover.setVisibility(View.VISIBLE);
                 imageIcon.setVisibility(View.INVISIBLE);
 
-//                Glide.with(GifActivity.this).load(datas.get(datas.size() - 1).picList[0].full).dontAnimate()
-//                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-//                        .listener(new RequestListener<String, GlideDrawable>() {
-//                            @Override
-//                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-//                                return false;
-//                            }
-//
-//                            @Override
-//                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-//                                if (imageIcon.getVisibility() == View.INVISIBLE) {
-//                                    imageView.setVisibility(View.VISIBLE);
-//                                    imageCover.setVisibility(View.INVISIBLE);
-////                                    imageProgress.setVisibility(View.INVISIBLE);
-//                                } else {
-//                                    Log.d("lpftag", "加载完毕，不是当前");
-//                                }
-//                                return false;
-//                            }
-//                        })
-//                        .into(imageView);
+                Glide.with(GifActivity2.this).load(datas.get(datas.size() - 1).picList[0].full).dontAnimate()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .listener(new RequestListener<String, GlideDrawable>() {
+                            @Override
+                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                return false;
+                            }
 
-                AlxGifHelper.displayImage(datas.get(datas.size() - 1).picList[0].full,
-                        imageView,
-                        imageProgress,
-                        null,
-                        700
-                );
-                if (imageIcon.getVisibility() == View.INVISIBLE) {
-                    imageView.setVisibility(View.VISIBLE);
-                    imageCover.setVisibility(View.INVISIBLE);
+                            @Override
+                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                if (imageIcon.getVisibility() == View.INVISIBLE) {
+                                    imageView.setVisibility(View.VISIBLE);
+                                    imageCover.setVisibility(View.INVISIBLE);
 //                                    imageProgress.setVisibility(View.INVISIBLE);
-                } else {
-                    Log.d("lpftag", "加载完毕，不是当前");
-                }
+                                } else {
+                                    Log.d("lpftag", "加载完毕，不是当前");
+                                }
+                                return false;
+                            }
+                        })
+                        .into(imageView);
             }
         } else {
             //加载中间的第一个

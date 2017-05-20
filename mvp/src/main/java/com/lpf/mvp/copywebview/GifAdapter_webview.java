@@ -1,12 +1,10 @@
-package com.lpf.mvp.loadGif;
+package com.lpf.mvp.copywebview;
 
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -15,6 +13,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.lpf.mvp.R;
+import com.lpf.mvp.loadGif.Feed;
 import com.lpf.mvp.widget.MyWebView;
 
 import java.util.ArrayList;
@@ -77,7 +76,7 @@ public class GifAdapter_webview extends BaseAdapter {
         final ViewHolder holder;
         final Feed.PictureMeta imageUrl = datas.get(position).picList[0];
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_gif, null);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_gif_webview, null);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {

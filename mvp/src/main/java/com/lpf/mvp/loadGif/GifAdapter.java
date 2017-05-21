@@ -129,15 +129,17 @@ public class GifAdapter extends BaseAdapter {
 //                                }
 //                            }).into(holder.imageView);
 
-//                    holder.imageCover.setVisibility(View.VISIBLE);
+                    holder.imageCover.setVisibility(View.VISIBLE);
                     AlxGifHelper.displayImage(imageUrl.full,
+                            holder.imageIcon,
                             holder.imageView,
+                            holder.imageCover,
                             holder.progressBar,
-                            null,
+                            holder.tvProgress,
                             700
                     );
                     //这里应该加上回调
-                    holder.imageCover.setVisibility(View.INVISIBLE);
+//                    holder.imageCover.setVisibility(View.INVISIBLE);
 
                 }else{
                     Glide.with(mContext).load(imageUrl.for_list).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(holder.imageCover);
@@ -160,6 +162,7 @@ public class GifAdapter extends BaseAdapter {
         ImageView imageIcon;
 //        ProgressBar progressBar;
         ProgressWheel progressBar;
+        TextView tvProgress;
 
         View rootView;
 
@@ -169,6 +172,7 @@ public class GifAdapter extends BaseAdapter {
             this.progressBar = (ProgressWheel) view.findViewById(R.id.gif_progress);
             this.imageCover = (ImageView) view.findViewById(R.id.gif_img_cover);
             this.imageIcon = (ImageView) view.findViewById(R.id.gif_icon);
+            this.tvProgress = (TextView)view.findViewById(R.id.gif_progress_value);
         }
 
     }

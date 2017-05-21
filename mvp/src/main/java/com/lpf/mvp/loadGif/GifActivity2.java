@@ -222,7 +222,9 @@ public class GifActivity2 extends BaseActivity<GifPresenter, GifModel> implement
                         imageIcon.setVisibility(View.INVISIBLE);
 
                         AlxGifHelper.displayImage(datas.get(firstVisible + i).picList[0].full,
+                                imageIcon,
                                 imageView,
+                                imageCover,
                                 imageProgress,
                                 null,
                                 700
@@ -253,7 +255,9 @@ public class GifActivity2 extends BaseActivity<GifPresenter, GifModel> implement
                     imageCover.setVisibility(View.VISIBLE);
 
                     AlxGifHelper.displayImage(datas.get(firstVisible).picList[0].full,
+                            imageIcon,
                             imageView,
+                            imageCover,
                             imageProgress,
                             null,
                             700

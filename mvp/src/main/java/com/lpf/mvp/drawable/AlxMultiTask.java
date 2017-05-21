@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -12,7 +13,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Alex on 2016/4/19.
- * 用于替换系统自带的AsynTask，使用自己的多线程池，执行一些比较复杂的工作，比如select photos，这里用的是缓存线程池，也可以用和cpu数相等的定长线程池以提高性能
+ * 用于替换系统自带的AsynTask，使用自己的多线程池，执行一些比较复杂的工作，
+ * 比如select photos，这里用的是缓存线程池，也可以用和cpu数相等的定长线程池以提高性能
  */
 public abstract class AlxMultiTask<Params, Progress, Result> extends AsyncTask<Params, Progress, Result> {
     public static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();

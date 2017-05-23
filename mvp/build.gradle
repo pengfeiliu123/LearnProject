@@ -20,8 +20,8 @@ android {
         }
 
         debug {
-//            resValue "string", "news_server_url", "https://news-web.newsstationtech.com/"
-            resValue "string", "news_server_url", "https://news-web-staging.newsstationtech.com/"
+            resValue "string", "news_server_url", "https://news-web.newsstationtech.com/"
+//            resValue "string", "news_server_url", "https://news-web-staging.newsstationtech.com/"
             minifyEnabled false
         }
     }

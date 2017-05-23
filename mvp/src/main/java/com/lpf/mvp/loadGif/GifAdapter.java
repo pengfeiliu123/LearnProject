@@ -22,6 +22,7 @@ import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.bumptech.glide.request.target.Target;
 import com.lpf.mvp.R;
 import com.lpf.mvp.drawable.AlxGifHelper;
+import com.lpf.mvp.drawable.LoadingGifHelper;
 import com.lpf.mvp.widget.GifView;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
@@ -50,8 +51,8 @@ public class GifAdapter extends BaseAdapter {
         mContext = context;
         getDatas = list;
 
-        for (int i =0; i<getDatas.size();i++){
-            if(getDatas.get(i).picList[0].full.endsWith(".gif")){
+        for (int i = 0; i < getDatas.size(); i++) {
+            if (getDatas.get(i).picList[0].full.endsWith(".gif")) {
                 datas.add(getDatas.get(i));
             }
         }
@@ -102,46 +103,30 @@ public class GifAdapter extends BaseAdapter {
         }
 
 //        Log.d("lpftag","tag:"+holder.imageIcon.getTag());
-        Log.d("lpftag", "position:"+position+"-->url:" + imageUrl.full+" size:"+imageUrl.size);
+        Log.d("lpftag", "position:" + position + "-->url:" + imageUrl.full + " size:" + imageUrl.size);
 
-        if(null!= holder.imageView.getTag() && (imageUrl.full).equals(holder.imageView.getTag())){
+        if (null != holder.imageView.getTag() && (imageUrl.full).equals(holder.imageView.getTag())) {
 
-        }else{
-            Log.d("lpftag","load again");
+        } else {
+            Log.d("lpftag", "load again");
             holder.imageView.setTag(imageUrl.for_list);
-            if(imageUrl.full.endsWith("gif")){
-                if(position == 0){
+            if (imageUrl.full.endsWith("gif")) {
+                if (position == 0) {
                     holder.progressBar.setVisibility(View.VISIBLE);
                     holder.imageIcon.setVisibility(View.INVISIBLE);
                     Glide.with(mContext).load(imageUrl.for_list).priority(Priority.HIGH).dontAnimate().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(holder.imageCover);
-//                    Glide.with(mContext).load(imageUrl.full).priority(Priority.NORMAL).dontAnimate().diskCacheStrategy(DiskCacheStrategy.SOURCE)
-//                            .listener(new RequestListener<String, GlideDrawable>() {
-//                                @Override
-//                                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-//                                    return false;
-//                                }
-//
-//                                @Override
-//                                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-//                                    holder.imageCover.setVisibility(View.INVISIBLE);
-//                                    holder.progressBar.setVisibility(View.INVISIBLE);
-//                                    return false;
-//                                }
-//                            }).into(holder.imageView);
 
                     holder.imageCover.setVisibility(View.VISIBLE);
-                    AlxGifHelper.displayImage(imageUrl.full,
-                            holder.imageIcon,
+                    LoadingGifHelper.displayImage(imageUrl.full,
                             holder.imageView,
                             holder.imageCover,
+                            holder.imageIcon,
                             holder.progressBar,
                             holder.tvProgress,
                             700
                     );
-                    //这里应该加上回调
-//                    holder.imageCover.setVisibility(View.INVISIBLE);
 
-                }else{
+                } else {
                     Glide.with(mContext).load(imageUrl.for_list).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(holder.imageCover);
                 }
             }
@@ -160,7 +145,7 @@ public class GifAdapter extends BaseAdapter {
         ImageView imageCover;
         GifImageView imageView;
         ImageView imageIcon;
-//        ProgressBar progressBar;
+        //        ProgressBar progressBar;
         ProgressWheel progressBar;
         TextView tvProgress;
 
@@ -172,7 +157,7 @@ public class GifAdapter extends BaseAdapter {
             this.progressBar = (ProgressWheel) view.findViewById(R.id.gif_progress);
             this.imageCover = (ImageView) view.findViewById(R.id.gif_img_cover);
             this.imageIcon = (ImageView) view.findViewById(R.id.gif_icon);
-            this.tvProgress = (TextView)view.findViewById(R.id.gif_progress_value);
+            this.tvProgress = (TextView) view.findViewById(R.id.gif_progress_value);
         }
 
     }

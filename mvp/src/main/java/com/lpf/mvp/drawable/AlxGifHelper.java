@@ -67,7 +67,8 @@ public class AlxGifHelper {
         public int displayWidth;//imageView的控件宽度
     }
 
-    public static ConcurrentHashMap<String, ArrayList<ProgressViews>> memoryCache;//防止同一个gif文件建立多个下载线程,url和imageView是一对多的关系,如果一个imageView建立了一次下载，那么其他请求这个url的imageView不需要重新开启一次新的下载，这几个imageView同时回调
+    public static ConcurrentHashMap<String, ArrayList<ProgressViews>>
+            memoryCache;//防止同一个gif文件建立多个下载线程,url和imageView是一对多的关系,如果一个imageView建立了一次下载，那么其他请求这个url的imageView不需要重新开启一次新的下载，这几个imageView同时回调
     //为了防止内存泄漏，这个一对多的关系均使用LRU缓存
 
     /**
@@ -76,8 +77,13 @@ public class AlxGifHelper {
      * @param url
      * @param gifView
      */
-    public static void displayImage(final String url, ImageView gifIcon, GifImageView gifView, ImageView coverView,
-                                    ProgressWheel progressBar, TextView tvProgress, int displayWidth) {
+    public static void displayImage(final String url,
+                                    GifImageView gifView,
+                                    ImageView coverView,
+                                    ImageView gifIcon,
+                                    ProgressWheel progressBar,
+                                    TextView tvProgress,
+                                    int displayWidth) {
         //首先查询一下这个gif是否已被缓存
         String md5Url = getMd5(url);
         String path = gifView.getContext().getCacheDir().getAbsolutePath() + "/" + md5Url;//带.tmp后缀的是没有下载完成的，用于加载第一帧，不带tmp后缀是下载完成的，
@@ -108,7 +114,8 @@ public class AlxGifHelper {
             return;
         }
         if (memoryCache == null) memoryCache = new ConcurrentHashMap<>();
-        if (memoryCache.get(url) == null) memoryCache.put(url, new ArrayList<ProgressViews>());
+        if (memoryCache.get(url) == null) memoryCache.put(url,
+                new ArrayList<ProgressViews>());
         //将现在申请加载的这个imageView放到缓存里，防止重复加载
         memoryCache.get(url).add(new ProgressViews(imageViewWait, imageViewIcon, imageViewCover, progressBarWait, textViewWait, displayWidth));
 
@@ -161,7 +168,9 @@ public class AlxGifHelper {
                 if (path == null || path.length() < 5) return;
                 File downloadFile = new File(path);
                 File renameFile = new File(path.substring(0, path.length() - 4));
-                if (path.endsWith(".tmp")) downloadFile.renameTo(renameFile);//将.tmp后缀去掉
+                if (path.endsWith(".tmp"))
+                    downloadFile.renameTo(renameFile);//将.tmp后缀去掉
+
                 Log.i("lpftag", "下载GIf成功,文件路径是" + path + " 重命名之后是" + renameFile.getAbsolutePath());
                 if (memoryCache == null) return;
                 ArrayList<ProgressViews> viewArr = memoryCache.get(url);
@@ -334,7 +343,9 @@ public class AlxGifHelper {
                     bis = new BufferedInputStream(httpURLConnection.getInputStream());
                     result = httpURLConnection.getExpiration();
                     result = result < System.currentTimeMillis() ? System.currentTimeMillis() + 40000 : result;
-                    fileLen = httpURLConnection.getContentLength();//这里通过http报文的header Content-Length来获取gif的总大小，需要服务器提前把header写好
+                    fileLen = httpURLConnection.getContentLength();
+                    //这里通过http报文的header Content-Length来获取gif的总大小，
+                    // 需要服务器提前把header写好
                 } else {
                     Log.e("Alex", "downloadToStream -> responseCode ==> " + responseCode);
                     return -1;

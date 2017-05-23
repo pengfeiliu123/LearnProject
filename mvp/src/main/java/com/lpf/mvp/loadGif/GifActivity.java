@@ -33,6 +33,7 @@ import com.lpf.mvp.R;
 import com.lpf.mvp.base.BaseActivity;
 import com.lpf.mvp.common.Util;
 import com.lpf.mvp.drawable.AlxGifHelper;
+import com.lpf.mvp.drawable.LoadingGifHelper;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 import java.net.UnknownHostException;
@@ -71,9 +72,6 @@ public class GifActivity extends BaseActivity<GifPresenter, GifModel> implements
     @BindView(R.id.positionTop)
     TextView positionTop;
     int pos = 0;
-    private int showGifPos = 0;
-    private int lastShowGifPos = 0;
-    private int lastVisibleItemPos = 0;
 
     private List<Feed> datas = new ArrayList<Feed>();
 
@@ -90,11 +88,6 @@ public class GifActivity extends BaseActivity<GifPresenter, GifModel> implements
         mAdapter = new GifAdapter(this, datas);
 
         gifList.setAdapter(mAdapter);
-
-//        if(gifList!=null && gifList.getChildAt(0)!=null && gifList.getChildAt(0).findViewById(R.id.gif_img)!=null) {
-//            ImageView imageView = (ImageView) gifList.getChildAt(0).findViewById(R.id.gif_img);
-//            Glide.with(GifActivity.this).load(datas.get(0).picList[0].full).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
-//        }
     }
 
     @Override
@@ -132,9 +125,6 @@ public class GifActivity extends BaseActivity<GifPresenter, GifModel> implements
     @Override
     protected void initView() {
 
-//        mAdapter = new GifAdapter(GifActivity.this, datas);
-//        gifList.setAdapter(mAdapter);
-
         mPresenter.loadGif();
 
 
@@ -156,8 +146,6 @@ public class GifActivity extends BaseActivity<GifPresenter, GifModel> implements
                         positionTop.setText("正在滑动...");
 //
                         Glide.with(MainApplication.getInstance()).resumeRequests();
-                        lastShowGifPos = showGifPos;
-
 
                         break;
                     case AbsListView.OnScrollListener.SCROLL_STATE_FLING:
@@ -174,12 +162,6 @@ public class GifActivity extends BaseActivity<GifPresenter, GifModel> implements
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
-                showGifPos = firstVisibleItem;
-
-//                if(firstVisible == firstVisibleItem){
-//                    return;
-//                }
-
                 firstVisible = firstVisibleItem;
                 visibleCount = visibleItemCount;
                 totalCount = totalItemCount;
@@ -192,7 +174,6 @@ public class GifActivity extends BaseActivity<GifPresenter, GifModel> implements
 
         Log.d("lpftag", "firstVisibleItem:" + firstVisible + "-->visibleItemCount：" + visibleCount);
 
-        //reset all items status
         resetAllItemsStatus(view);
 
 
@@ -219,44 +200,14 @@ public class GifActivity extends BaseActivity<GifPresenter, GifModel> implements
                 imageIcon.setVisibility(View.INVISIBLE);
                 tvProgress.setVisibility(View.VISIBLE);
 
-//                Glide.with(GifActivity.this).load(datas.get(datas.size() - 1).picList[0].full).dontAnimate()
-//                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-//                        .listener(new RequestListener<String, GlideDrawable>() {
-//                            @Override
-//                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-//                                return false;
-//                            }
-//
-//                            @Override
-//                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-//                                if (imageIcon.getVisibility() == View.INVISIBLE) {
-//                                    imageView.setVisibility(View.VISIBLE);
-//                                    imageCover.setVisibility(View.INVISIBLE);
-////                                    imageProgress.setVisibility(View.INVISIBLE);
-//                                } else {
-//                                    Log.d("lpftag", "加载完毕，不是当前");
-//                                }
-//                                return false;
-//                            }
-//                        })
-//                        .into(imageView);
-
-                AlxGifHelper.displayImage(datas.get(datas.size() - 1).picList[0].full,
-                        imageIcon,
+                LoadingGifHelper.displayImage(datas.get(datas.size() - 1).picList[0].full,
                         imageView,
                         imageCover,
+                        imageIcon,
                         imageProgress,
                         tvProgress,
                         700
                 );
-//                if (imageIcon.getVisibility() == View.INVISIBLE) {
-//                    imageView.setVisibility(View.VISIBLE);
-//                    imageCover.setVisibility(View.INVISIBLE);
-////                                    imageProgress.setVisibility(View.INVISIBLE);
-//                    Log.d("lpftag", "显示当前"+datas.get(datas.size() - 1).picList[0].full);
-//                } else {
-//                    Log.d("lpftag", "加载完毕，不是当前");
-//                }
             }
         } else {
             //加载中间的第一个
@@ -279,22 +230,14 @@ public class GifActivity extends BaseActivity<GifPresenter, GifModel> implements
                         imageIcon.setVisibility(View.INVISIBLE);
                         tvProgress.setVisibility(View.VISIBLE);
 
-                        AlxGifHelper.displayImage(datas.get(firstVisible + i).picList[0].full,
-                                imageIcon,
+                        LoadingGifHelper.displayImage(datas.get(firstVisible + i).picList[0].full,
                                 imageView,
                                 imageCover,
+                                imageIcon,
                                 imageProgress,
                                 tvProgress,
                                 700
                         );
-//                        if (imageIcon.getVisibility() == View.INVISIBLE) {
-//                            imageView.setVisibility(View.VISIBLE);
-//                            imageCover.setVisibility(View.INVISIBLE);
-////                            imageProgress.setVisibility(View.INVISIBLE);
-//                            Log.d("lpftag", "显示当前"+datas.get(firstVisible + i).picList[0].full);
-//                        } else {
-//                            Log.d("lpftag", "加载完毕，不是当前");
-//                        }
                         isRunning = true;
                         return;
                     }
@@ -315,30 +258,20 @@ public class GifActivity extends BaseActivity<GifPresenter, GifModel> implements
                     imageCover.setVisibility(View.VISIBLE);
                     tvProgress.setVisibility(View.VISIBLE);
 
-                    AlxGifHelper.displayImage(datas.get(firstVisible).picList[0].full,
-                            imageIcon,
+                    LoadingGifHelper.displayImage(datas.get(firstVisible).picList[0].full,
                             imageView,
                             imageCover,
+                            imageIcon,
                             imageProgress,
                             tvProgress,
                             700
                     );
-                    //todo 这里有问题
-//                    if (imageIcon.getVisibility() == View.INVISIBLE) {
-//                        imageView.setVisibility(View.VISIBLE);
-//                        imageCover.setVisibility(View.INVISIBLE);
-////                        imageProgress.setVisibility(View.INVISIBLE);
-//
-//                        Log.d("lpftag", "显示当前"+datas.get(firstVisible).picList[0].full);
-//                    } else {
-//                        Log.d("lpftag", "加载完毕，不是当前");
-//                    }
                 }
             }
         }
-        //如果滚动到了最后一个的情况需要考虑一下
     }
 
+    //reset all items
     private void resetAllItemsStatus(AbsListView view) {
         for (int i = 0; i < visibleCount; i++) {
             if (view != null && view.getChildAt(i) != null && view.getChildAt(i).findViewById(R.id.gif_img) != null) {
@@ -347,14 +280,13 @@ public class GifActivity extends BaseActivity<GifPresenter, GifModel> implements
                 final ProgressWheel imageProgress = (ProgressWheel) view.getChildAt(i).findViewById(R.id.gif_progress);
                 final ImageView imageIcon = (ImageView) view.getChildAt(i).findViewById(R.id.gif_icon);
                 final TextView tvProgress = (TextView) view.getChildAt(i).findViewById(R.id.gif_progress_value);
-//                Glide.with(GifActivity.this).load(datas.get(firstVisible + i).picList[0].for_list).dontAnimate()
-//                        .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageCover);
+
                 imageCover.setVisibility(View.VISIBLE);
                 imageIcon.setVisibility(View.VISIBLE);
+
                 imageView.setVisibility(View.INVISIBLE);
                 tvProgress.setVisibility(View.INVISIBLE);
                 imageProgress.setVisibility(View.INVISIBLE);
-//                imageProgress.setVisibility(View.GONE);
 
             }
         }
